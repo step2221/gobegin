@@ -17,6 +17,9 @@ func main() {
 		"Саша":   8,
 	}
 
+	delete(ages, "Саша")
+	// Мапы как и срезы являются ссылкой
+
 	fmt.Printf("Ксюше %d лет\n", ages["Ксюша"])
 
 	age, exists := ages["Антон"]
