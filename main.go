@@ -9,6 +9,13 @@ type employee struct {
 	salary int
 }
 
+//Кастомный тип
+type age int
+
+func (a age) isAdult() bool { //метод с ресивером
+	return a >= 18
+}
+
 func main() {
 	/*ages := make(map[string]int)
 	ages["Ксюша"] = 7
@@ -18,6 +25,9 @@ func main() {
 	for key, value := range ages {
 		fmt.Printf("%s - %d\n", key, value)
 	}*/
+	myAge := age(20)
+	fmt.Println("Я совершеннолетний?", myAge.isAdult())
+
 	ages := map[string]int{
 		"Ксюша":  7,
 		"Андрей": 5,
