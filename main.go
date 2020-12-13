@@ -21,4 +21,29 @@ func main() {
 	for _, item := range todoList {
 		fmt.Printf("%s\n", item)
 	}
+
+	for i := 0; i <= 5; i++ {
+		fmt.Println(i)
+	}
+
+	//Так бесконечный цикл
+	/*for i := 0; i <= 5; {
+		fmt.Println(i)
+	}*/
+
+	//Так цикл до завершения программы
+	/*for i := 0; ; i++ {
+		fmt.Println(i)
+	}*/
+
+	//Бесконечный цикл
+	i := 0
+	for {
+		if i == 10 {
+			break
+		}
+		fmt.Println(i)
+		i++
+
+	}
 }
