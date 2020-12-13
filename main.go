@@ -18,4 +18,11 @@ func main() {
 	}
 
 	fmt.Printf("Ксюше %d лет\n", ages["Ксюша"])
+
+	age, exists := ages["Антон"]
+	if !exists {
+		fmt.Println("Антона нет в списке")
+	} else {
+		fmt.Printf("Антона %d лет\n", age)
+	}
 }
