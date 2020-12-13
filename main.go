@@ -12,15 +12,15 @@ func main() {
 	/*var todoList [3]string
 	todoList[0] = "пункт 1"*/
 	//Либо так ...
-	var todoList = [...]string{"пункт 1", "пункт 2", "пункт 3"}
+	/*var todoList = [...]string{"пункт 1", "пункт 2", "пункт 3"}
 
 	fmt.Printf("Кол-во элементов в списке: %d \n", len(todoList))
 	/*for index, item := range todoList {
 		fmt.Printf("%d. %s \n", index, item)
 	}*/
-	for _, item := range todoList {
+	/*for _, item := range todoList {
 		fmt.Printf("%s\n", item)
-	}
+	}*/
 	/*
 		for i := 0; i <= 5; i++ {
 			fmt.Println(i)
@@ -55,7 +55,17 @@ func main() {
 
 	// срез
 	todoList1 := []string{"пункт 1", "пункт 2", "пункт 3"}
-	fmt.Println("Длина списка:", len(todoList1))
+	tasks := todoList1[:] //[:] срез по всем [1:3] срез с 1ого по 3
+	for i := range tasks {
+		fmt.Println(tasks[i])
+	}
+	fmt.Println("-----После функции changeTask ------")
+	changeTask(tasks)
+	for i := range tasks {
+		fmt.Println(tasks[i])
+	}
+
+	/*fmt.Println("Длина списка:", len(todoList1))
 	fmt.Println("Емкость списка:", cap(todoList1))
 
 	todoList1 = append(todoList1, "Пунт 4 новый")
@@ -74,7 +84,7 @@ func main() {
 	}
 	for _, item := range newtodolist {
 		fmt.Printf("%s\n", item)
-	}
+	}*/
 }
 
 //fillArray .
@@ -92,5 +102,12 @@ func fillArraySuch(arr [3]int) [3]int {
 		arr[i] = i
 	}
 	return arr
+
+}
+
+//changeTask //
+func changeTask(tasks []string) {
+	tasks[0] = "пройти курс"
+	tasks[1] = "сказать спасибо"
 
 }
