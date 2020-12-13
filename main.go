@@ -38,8 +38,11 @@ func main() {
 
 	employee1 := newEmployee("Вася", "М", 25, 1500)
 	employee2 := newEmployee("Петя", "М", 28, 2000)
+	setName(&employee1, "Геннадий") //передаем  указатель
+	employee1.setNameEm("Конечно Вася")
 
 	fmt.Printf("%v\n", employee1.getInfo())
+
 	fmt.Printf("%v\n", employee2.getInfo())
 	//fmt.Printf("%v\n", employee2)
 }
@@ -55,4 +58,12 @@ func newEmployee(name, sex string, age, salary int) employee {
 
 func (e employee) getInfo() string {
 	return fmt.Sprintf("Сотрудник: %s\n Возраст: %d\n Зарплата: %d\n", e.name, e.age, e.salary)
+}
+
+func setName(e *employee, name string) { //функция в которую передается указатель
+	//на структуру, для изменеия самой структуры
+	e.name = name
+}
+func (e *employee) setNameEm(name string) { //функция указатель в роли ресивера
+	e.name = name
 }
