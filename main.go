@@ -37,7 +37,7 @@ func main() {
 	}*/
 
 	//Бесконечный цикл
-	i := 0
+	/*i := 0
 	for {
 		if i == 10 {
 			break
@@ -45,5 +45,30 @@ func main() {
 		fmt.Println(i)
 		i++
 
+	}*/
+	var arr [3]int
+	fillArray(arr)
+	fmt.Println(arr)
+
+	brr := fillArraySuch(arr)
+	fmt.Println(brr)
+
+}
+
+//fillArray .
+func fillArray(arr [3]int) {
+	for i := 0; i < len(arr); i++ {
+		arr[i] = i
 	}
+
+	fmt.Println("fillArray():", arr)
+}
+
+//fillArraySuch .
+func fillArraySuch(arr [3]int) [3]int {
+	for i := 0; i < len(arr); i++ {
+		arr[i] = i
+	}
+	return arr
+
 }
