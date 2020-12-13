@@ -1,113 +1,79 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
+
+type employee struct {
+	name   string
+	sex    string //пол
+	age    int
+	salary int
+}
+
+//Кастомный тип
+type age int
+
+func (a age) isAdult() bool { //метод с ресивером
+	return a >= 18
+}
 
 func main() {
-	/*var todoList = [3]string{
-		"пункт 1", "пункт 2", "пункт 3",
+	/*ages := make(map[string]int)
+	ages["Ксюша"] = 7
+	ages["Андрей"] = 5
+	ages["Саша"] = 8
+
+	for key, value := range ages {
+		fmt.Printf("%s - %d\n", key, value)
 	}*/
-	//Либо так ...
-	/*var todoList [3]string
-	todoList[0] = "пункт 1"*/
-	//Либо так ...
-	/*var todoList = [...]string{"пункт 1", "пункт 2", "пункт 3"}
+	myAge := age(20)
+	fmt.Println("Я совершеннолетний?", myAge.isAdult())
 
-	fmt.Printf("Кол-во элементов в списке: %d \n", len(todoList))
-	/*for index, item := range todoList {
-		fmt.Printf("%d. %s \n", index, item)
-	}*/
-	/*for _, item := range todoList {
-		fmt.Printf("%s\n", item)
-	}*/
-	/*
-		for i := 0; i <= 5; i++ {
-			fmt.Println(i)
-		}*/
-
-	//Так бесконечный цикл
-	/*for i := 0; i <= 5; {
-		fmt.Println(i)
-	}*/
-
-	//Так цикл до завершения программы
-	/*for i := 0; ; i++ {
-		fmt.Println(i)
-	}*/
-
-	//Бесконечный цикл
-	/*i := 0
-	for {
-		if i == 10 {
-			break
-		}
-		fmt.Println(i)
-		i++
-
-	}*/
-	/*var arr [3]int
-	fillArray(arr)
-	fmt.Println(arr)
-
-	brr := fillArraySuch(arr)
-	fmt.Println(brr)*/
-
-	// срез
-	todoList1 := []string{"пункт 1", "пункт 2", "пункт 3"}
-	tasks := todoList1[:] //[:] срез по всем [1:3] срез с 1ого по 3
-	for i := range tasks {
-		fmt.Println(tasks[i])
-	}
-	fmt.Println("-----После функции changeTask ------")
-	changeTask(tasks)
-	for i := range tasks {
-		fmt.Println(tasks[i])
+	ages := map[string]int{
+		"Ксюша":  7,
+		"Андрей": 5,
+		"Саша":   8,
 	}
 
-	/*fmt.Println("Длина списка:", len(todoList1))
-	fmt.Println("Емкость списка:", cap(todoList1))
+	delete(ages, "Саша")
+	// Мапы как и срезы являются ссылкой
 
-	todoList1 = append(todoList1, "Пунт 4 новый")
+	fmt.Printf("Ксюше %d лет\n", ages["Ксюша"])
 
-	fmt.Println("Длина списка после добавления:", len(todoList1))
-	fmt.Println("Емкость списка после добавления:", cap(todoList1))
-
-	newtodolist := append(todoList1, "Пункт 5", "Пункт 6")
-	fmt.Println("Длина списка после добавления:", len(todoList1))
-	fmt.Println("Емкость списка после добавления:", cap(todoList1))
-	fmt.Println("Длина списка после добавления:", len(newtodolist))
-	fmt.Println("Емкость списка после добавления:", cap(newtodolist))
-
-	for _, item := range todoList1 {
-		fmt.Printf("%s\n", item)
+	age, exists := ages["Антон"]
+	if !exists {
+		fmt.Println("Антона нет в списке")
+	} else {
+		fmt.Printf("Антона %d лет\n", age)
 	}
-	for _, item := range newtodolist {
-		fmt.Printf("%s\n", item)
-	}*/
+
+	employee1 := newEmployee("Вася", "М", 25, 1500)
+	employee2 := newEmployee("Петя", "М", 28, 2000)
+	setName(&employee1, "Геннадий") //передаем  указатель
+	employee1.setNameEm("Конечно Вася")
+
+	fmt.Printf("%v\n", employee1.getInfo())
+
+	fmt.Printf("%v\n", employee2.getInfo())
+	//fmt.Printf("%v\n", employee2)
 }
 
-//fillArray .
-func fillArray(arr [3]int) {
-	for i := 0; i < len(arr); i++ {
-		arr[i] = i
+func newEmployee(name, sex string, age, salary int) employee {
+	return employee{
+		name:   name,
+		sex:    sex,
+		age:    age,
+		salary: salary,
 	}
-
-	fmt.Println("fillArray():", arr)
 }
 
-//fillArraySuch .
-func fillArraySuch(arr [3]int) [3]int {
-	for i := 0; i < len(arr); i++ {
-		arr[i] = i
-	}
-	return arr
-
+func (e employee) getInfo() string {
+	return fmt.Sprintf("Сотрудник: %s\n Возраст: %d\n Зарплата: %d\n", e.name, e.age, e.salary)
 }
 
-//changeTask //
-func changeTask(tasks []string) {
-	tasks[0] = "пройти курс"
-	tasks[1] = "сказать спасибо"
-
+func setName(e *employee, name string) { //функция в которую передается указатель
+	//на структуру, для изменеия самой структуры
+	e.name = name
+}
+func (e *employee) setNameEm(name string) { //функция указатель в роли ресивера
+	e.name = name
 }
