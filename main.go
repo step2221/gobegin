@@ -1,79 +1,106 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type employee struct {
+	id     int
 	name   string
 	sex    string //пол
 	age    int
 	salary int
 }
 
-//Кастомный тип
-type age int
+type storage interface {
+	insert(e employee) error
+	get(id int) (employee, error)
+	delete(id int) error
+}
 
-func (a age) isAdult() bool { //метод с ресивером
-	return a >= 18
+type memoryStorage struct {
+	data map[int]employee
+}
+
+type dumbStorage struct{}
+
+func newDumbStorage() *dumbStorage {
+	return &dumbStorage{}
+}
+func (s *dumbStorage) insert(e employee) error {
+	fmt.Printf("вставка пользователя с ID: %d прошла успешно\n", e.id)
+	return nil
+}
+func (s *dumbStorage) get(id int) (employee, error) {
+	e := employee{id: id}
+	return e, nil
+}
+func (s *dumbStorage) delete(id int) error {
+	fmt.Printf("удаление пользователя с id : %d прошло успешно", id)
+	return nil
+}
+
+func newMemoryStorage() *memoryStorage {
+	return &memoryStorage{
+		data: make(map[int]employee),
+	}
+}
+
+func (s *memoryStorage) insert(e employee) error {
+	s.data[e.id] = e
+	return nil
+}
+
+func (s *memoryStorage) get(id int) (employee, error) {
+	e, exists := s.data[id]
+	if !exists {
+		return employee{}, errors.New("такого сотрудника не существует")
+	}
+	return e, nil
+}
+
+func (s *memoryStorage) delete(id int) error {
+	delete(s.data, id)
+	return nil
 }
 
 func main() {
-	/*ages := make(map[string]int)
-	ages["Ксюша"] = 7
-	ages["Андрей"] = 5
-	ages["Саша"] = 8
+	ms := newMemoryStorage()
+	ds := newDumbStorage()
 
-	for key, value := range ages {
-		fmt.Printf("%s - %d\n", key, value)
-	}*/
-	myAge := age(20)
-	fmt.Println("Я совершеннолетний?", myAge.isAdult())
+	spawnEmployees(ms)
+	fmt.Println(ms.get(3))
+	spawnEmployees(ds)
+	fmt.Println(ds.get(3))
 
-	ages := map[string]int{
-		"Ксюша":  7,
-		"Андрей": 5,
-		"Саша":   8,
+	printType(2)
+	printType("sdf")
+	printType([]string{"1", "2"})
+}
+
+func spawnEmployees(s storage) {
+	for i := 1; i <= 10; i++ {
+		s.insert(employee{id: i})
+	}
+}
+
+func printType(value interface{}) {
+	switch value.(type) {
+	case int:
+		fmt.Println("this is int")
+	case string:
+		fmt.Println("this is string")
+	default:
+		fmt.Println("this is not int and not string")
 	}
 
-	delete(ages, "Саша")
-	// Мапы как и срезы являются ссылкой
-
-	fmt.Printf("Ксюше %d лет\n", ages["Ксюша"])
-
-	age, exists := ages["Антон"]
-	if !exists {
-		fmt.Println("Антона нет в списке")
+	/*if _, ok := value.(string); ok {
+		fmt.Println("this is string")
+	} else if _, ok := value.(int); ok {
+		fmt.Println("this is int")
 	} else {
-		fmt.Printf("Антона %d лет\n", age)
+		fmt.Println("this is not int and not string")
 	}
-
-	employee1 := newEmployee("Вася", "М", 25, 1500)
-	employee2 := newEmployee("Петя", "М", 28, 2000)
-	setName(&employee1, "Геннадий") //передаем  указатель
-	employee1.setNameEm("Конечно Вася")
-
-	fmt.Printf("%v\n", employee1.getInfo())
-
-	fmt.Printf("%v\n", employee2.getInfo())
-	//fmt.Printf("%v\n", employee2)
-}
-
-func newEmployee(name, sex string, age, salary int) employee {
-	return employee{
-		name:   name,
-		sex:    sex,
-		age:    age,
-		salary: salary,
-	}
-}
-
-func (e employee) getInfo() string {
-	return fmt.Sprintf("Сотрудник: %s\n Возраст: %d\n Зарплата: %d\n", e.name, e.age, e.salary)
-}
-
-func setName(e *employee, name string) { //функция в которую передается указатель
-	//на структуру, для изменеия самой структуры
-	e.name = name
-}
-func (e *employee) setNameEm(name string) { //функция указатель в роли ресивера
-	e.name = name
+	*/
 }
