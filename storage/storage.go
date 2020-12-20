@@ -13,6 +13,8 @@ type Employee struct {
 	Age    int
 	Salary int
 }
+
+//Storage ..
 type Storage interface {
 	Insert(e Employee) error
 	Get(id int) (Employee, error)
@@ -20,6 +22,7 @@ type Storage interface {
 	Delete(id int) error
 }
 
+//MemoryStorage ..
 type MemoryStorage struct {
 	counter int
 	data    map[int]Employee
@@ -45,11 +48,11 @@ func (s *MemoryStorage) Insert(e *Employee) error {
 }
 
 //Get ..
-func (s *MemoryStorage) Get(Id int) (Employee, error) {
+func (s *MemoryStorage) Get(ID int) (Employee, error) {
 	s.Lock()
 	defer s.Unlock()
 
-	employee, ok := s.data[Id]
+	employee, ok := s.data[ID]
 	if !ok {
 		return Employee{}, errors.New("такого сотрудника не существует")
 	}
@@ -64,9 +67,9 @@ func (s *MemoryStorage) Update(id int, e Employee) {
 }
 
 //Delete .
-func (s *MemoryStorage) Delete(Id int) {
+func (s *MemoryStorage) Delete(ID int) {
 	s.Lock()
-	delete(s.data, Id)
+	delete(s.data, ID)
 	s.Unlock()
 
 }
