@@ -9,6 +9,22 @@ type employee struct {
 	salary int
 }
 
+type storage interface {
+	insert(e employee) error
+	get(id int) (employee, error)
+	delete(id int) error
+}
+
+type memoryStorage struct {
+	data map[int]employee
+}
+
+func newMemoryStorage() *memoryStorage {
+	return &memoryStorage{
+		data: make(map[int]employee),
+	}
+}
+
 //Кастомный тип
 type age int
 
