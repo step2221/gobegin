@@ -1,16 +1,16 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Привет Интернет")
-	})
-	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, r.URL.Query().Get("message"))
-	})
-	http.ListenAndServe(":8080", nil)
+	router := gin.Default()
+	router.POST("/employee")
+	router.GET("/employee/:id")
+	router.PUT("/employee/:id")
+	router.DELETE("employee/:id")
+
+	router.Run()
+
 }
