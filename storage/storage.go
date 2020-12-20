@@ -23,18 +23,18 @@ type memoryStorage struct {
 	data map[int]Employee
 }
 
-func newMemoryStorage() *memoryStorage {
+func NewMemoryStorage() *memoryStorage {
 	return &memoryStorage{
 		data: make(map[int]Employee),
 	}
 }
 
-func (s *memoryStorage) insert(e Employee) error {
+func (s *memoryStorage) ISnsert(e Employee) error {
 	s.data[e.id] = e
 	return nil
 }
 
-func (s *memoryStorage) get(id int) (Employee, error) {
+func (s *memoryStorage) GSet(id int) (Employee, error) {
 	e, exists := s.data[id]
 	if !exists {
 		return Employee{}, errors.New("такого сотрудника не существует")
@@ -42,17 +42,17 @@ func (s *memoryStorage) get(id int) (Employee, error) {
 	return e, nil
 }
 
-func (s *memoryStorage) delete(id int) error {
+func (s *memoryStorage) Delete(id int) error {
 	delete(s.data, id)
 	return nil
 }
 
 type dumbStorage struct{}
 
-func newDumbStorage() *dumbStorage {
+func NewDumbStorage() *dumbStorage {
 	return &dumbStorage{}
 }
-func (s *dumbStorage) insert(e Employee) error {
+func (s *dumbStorage) Insert(e Employee) error {
 	fmt.Printf("вставка пользователя с ID: %d прошла успешно\n", e.id)
 	return nil
 }

@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/step2221/gobegin/modules/storage"
 )
 
 func main() {
@@ -14,20 +16,20 @@ func main() {
 	}, time.Second*1)
 	time.Sleep(time.Minute)*/
 
-	ms := newMemoryStorage()
-	ds := newDumbStorage()
+	ms := storage.NewMemoryStorage()
+	ds := storage.NewDumbStorage()
 
 	spawnEmployees(ms)
-	fmt.Println(ms.get(3))
+	fmt.Println(ms.Get(3))
 	spawnEmployees(ds)
-	fmt.Println(ds.get(3))
+	fmt.Println(ds.Get(3))
 
 	printType(2)
 	printType("sdf")
 	printType([]string{"1", "2"})
 }
 
-func spawnEmployees(s storage) {
+func spawnEmployees(s Storage) {
 	for i := 1; i <= 10; i++ {
 		s.insert(Employee{id: i})
 	}
