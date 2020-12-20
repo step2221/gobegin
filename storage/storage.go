@@ -2,7 +2,6 @@ package storage
 
 import (
 	"errors"
-	"fmt"
 	"sync"
 )
 
@@ -21,54 +20,53 @@ type Storage interface {
 	Delete(id int) error
 }
 
-type memoryStorage struct {
+type MemoryStorage struct {
 	counter int
 	data    map[int]Employee
 	sync.Mutex
 }
 
-func NewMemoryStorage() *memoryStorage {
-	return &memoryStorage{
+//NewMemoryStorage ..
+func NewMemoryStorage() *MemoryStorage {
+	return &MemoryStorage{
 		data:    make(map[int]Employee),
 		counter: 1,
 	}
 }
 
-func (s *memoryStorage) Insert(e *Employee) error {
+//Insert .
+func (s *MemoryStorage) Insert(e *Employee) error {
 	s.Lock()
 	e.ID = s.counter
 	s.data[e.ID] = *e
+	s.counter++
 	s.Unlock()
 	return nil
 }
 
-func (s *memoryStorage) Get(Id int) (Employee, error) {
-	e, exists := s.data[Id]
-	if !exists {
+//Get ..
+func (s *MemoryStorage) Get(Id int) (Employee, error) {
+	s.Lock()
+	defer s.Unlock()
+
+	employee, ok := s.data[Id]
+	if !ok {
 		return Employee{}, errors.New("такого сотрудника не существует")
 	}
-	return e, nil
+	return employee, nil
 }
 
-func (s *memoryStorage) Delete(Id int) error {
+//Update ..
+func (s *MemoryStorage) Update(id int, e Employee) {
+	s.Lock()
+	s.data[id] = e
+	s.Unlock()
+}
+
+//Delete .
+func (s *MemoryStorage) Delete(Id int) {
+	s.Lock()
 	delete(s.data, Id)
-	return nil
-}
+	s.Unlock()
 
-type dumbStorage struct{}
-
-func NewDumbStorage() *dumbStorage {
-	return &dumbStorage{}
-}
-func (s *dumbStorage) Insert(e Employee) error {
-	fmt.Printf("вставка пользователя с ID: %d прошла успешно\n", e.ID)
-	return nil
-}
-func (s *dumbStorage) Get(Id int) (Employee, error) {
-	e := Employee{ID: Id}
-	return e, nil
-}
-func (s *dumbStorage) Delete(Id int) error {
-	fmt.Printf("удаление пользователя с id : %d прошло успешно", Id)
-	return nil
 }
