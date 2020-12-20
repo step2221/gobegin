@@ -1,2 +1,4 @@
+github.com/robteix/testmod v1.0.1 h1:QpG/pztPLj8uqbtrm2mrZ+Zm6MS6LyYq9iVupTgJ5Rw=
+github.com/robteix/testmod v1.0.1/go.mod h1:PdJqNQbwL2QH7hqip5h6vQ40MU7Kw1SSO3H5EbFj1ws=
 github.com/zhashkevych/scheduler v1.0.0 h1:gEbSIPykQ6OHGo/F4jJoC2iQtzzwOAQ6U6T6nQoo3v8=
 github.com/zhashkevych/scheduler v1.0.0/go.mod h1:x9baACtHSUu78Jvzv7QytjJ9beTJUh6tCRAtYnKYh3c=
