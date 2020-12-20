@@ -3,34 +3,42 @@ package storage
 import (
 	"errors"
 	"fmt"
+	"sync"
 )
 
 //Employee ..
 type Employee struct {
-	Id     int
-	name   string
-	sex    string //пол
-	age    int
-	salary int
+	ID     int
+	Name   string
+	Sex    string //пол
+	Age    int
+	Salary int
 }
 type Storage interface {
 	Insert(e Employee) error
 	Get(id int) (Employee, error)
+	Update(id int, e Employee)
 	Delete(id int) error
 }
 
 type memoryStorage struct {
-	data map[int]Employee
+	counter int
+	data    map[int]Employee
+	sync.Mutex
 }
 
 func NewMemoryStorage() *memoryStorage {
 	return &memoryStorage{
-		data: make(map[int]Employee),
+		data:    make(map[int]Employee),
+		counter: 1,
 	}
 }
 
-func (s *memoryStorage) Insert(e Employee) error {
-	s.data[e.Id] = e
+func (s *memoryStorage) Insert(e *Employee) error {
+	s.Lock()
+	e.ID = s.counter
+	s.data[e.ID] = *e
+	s.Unlock()
 	return nil
 }
 
@@ -53,11 +61,11 @@ func NewDumbStorage() *dumbStorage {
 	return &dumbStorage{}
 }
 func (s *dumbStorage) Insert(e Employee) error {
-	fmt.Printf("вставка пользователя с ID: %d прошла успешно\n", e.Id)
+	fmt.Printf("вставка пользователя с ID: %d прошла успешно\n", e.ID)
 	return nil
 }
 func (s *dumbStorage) Get(Id int) (Employee, error) {
-	e := Employee{Id: Id}
+	e := Employee{ID: Id}
 	return e, nil
 }
 func (s *dumbStorage) Delete(Id int) error {
