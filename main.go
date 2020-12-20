@@ -86,12 +86,21 @@ func spawnEmployees(s storage) {
 }
 
 func printType(value interface{}) {
-	if _, ok := value.(string); ok {
+	switch value.(type) {
+	case int:
+		fmt.Println("this is int")
+	case string:
+		fmt.Println("this is string")
+	default:
+		fmt.Println("this is not int and not string")
+	}
+
+	/*if _, ok := value.(string); ok {
 		fmt.Println("this is string")
 	} else if _, ok := value.(int); ok {
 		fmt.Println("this is int")
 	} else {
 		fmt.Println("this is not int and not string")
 	}
-
+	*/
 }
