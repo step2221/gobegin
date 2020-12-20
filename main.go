@@ -73,10 +73,25 @@ func main() {
 	fmt.Println(ms.get(3))
 	spawnEmployees(ds)
 	fmt.Println(ds.get(3))
+
+	printType(2)
+	printType("sdf")
+	printType([]string{"1", "2"})
 }
 
 func spawnEmployees(s storage) {
 	for i := 1; i <= 10; i++ {
 		s.insert(employee{id: i})
 	}
+}
+
+func printType(value interface{}) {
+	if _, ok := value.(string); ok {
+		fmt.Println("this is string")
+	} else if _, ok := value.(int); ok {
+		fmt.Println("this is int")
+	} else {
+		fmt.Println("this is not int and not string")
+	}
+
 }
