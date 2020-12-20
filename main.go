@@ -5,6 +5,9 @@ import (
 )
 
 func main() {
+	/*memoryStorage := NewMemoryStorage()
+	handler := NewHandler(memoryStorage)
+	*/
 	router := gin.Default()
 	router.POST("/employee")
 	router.GET("/employee/:id")
