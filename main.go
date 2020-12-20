@@ -3,13 +3,14 @@ package main
 import (
 	"fmt"
 
+	"github.com/robteix/testmod"
 	"github.com/step2221/gobegin/modules/storage"
 )
 
 func main() {
-
-	/*worker := scheduler.NewScheduler()
 	fmt.Println(testmod.Hi("rob"))
+	/*worker := scheduler.NewScheduler()
+
 
 	worker.Add(context.Background(), func(ctx context.Context) {
 		fmt.Printf("Текущее время %s\n", time.Now())
@@ -29,9 +30,11 @@ func main() {
 	printType([]string{"1", "2"})
 }
 
-func spawnEmployees(s Storage) {
+func spawnEmployees(s storage.Storage) {
 	for i := 1; i <= 10; i++ {
-		s.insert(Employee{id: i})
+		s.Insert(storage.Employee{
+			Id: i,
+		})
 	}
 }
 
