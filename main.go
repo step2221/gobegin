@@ -23,6 +23,24 @@ type memoryStorage struct {
 	data map[int]employee
 }
 
+type dumbStorage struct{}
+
+func newDumbStorage() *dumbStorage {
+	return &dumbStorage{}
+}
+func (s *dumbStorage) insert(e employee) error {
+	fmt.Printf("вставка пользователя с ID: %d прошла успешно\n", e.id)
+	return nil
+}
+func (s *dumbStorage) get(id int) (employee, error) {
+	e := employee{id: id}
+	return e, nil
+}
+func (s *dumbStorage) delete(id int) error {
+	fmt.Printf("удаление пользователя с id : %d прошло успешно", id)
+	return nil
+}
+
 func newMemoryStorage() *memoryStorage {
 	return &memoryStorage{
 		data: make(map[int]employee),
@@ -53,6 +71,16 @@ func main() {
 	fmt.Printf("types of s: %T\n", s)
 
 	s = newMemoryStorage()
+
+	fmt.Println("s==nil", s == nil)
+	fmt.Printf("types of s: %T\n", s)
+
+	s = newDumbStorage()
+
+	fmt.Println("s==nil", s == nil)
+	fmt.Printf("types of s: %T\n", s)
+
+	s = nil
 
 	fmt.Println("s==nil", s == nil)
 	fmt.Printf("types of s: %T\n", s)
