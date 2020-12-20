@@ -3,8 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-
-	_ "github.com/zhashkevych/scheduler"
 )
 
 type employee struct {
@@ -70,6 +68,7 @@ func (s *memoryStorage) delete(id int) error {
 func main() {
 
 	s := sheduler.NewScheduler()
+
 	ms := newMemoryStorage()
 	ds := newDumbStorage()
 
