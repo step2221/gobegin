@@ -1,8 +1,13 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"time"
+
+	"github.com/robteix/testmod"
+	"github.com/zhashkevych/scheduler"
 )
 
 type employee struct {
@@ -66,7 +71,16 @@ func (s *memoryStorage) delete(id int) error {
 }
 
 func main() {
-	ms := newMemoryStorage()
+
+	worker := scheduler.NewScheduler()
+	fmt.Println(testmod.Hi("rob"))
+
+	worker.Add(context.Background(), func(ctx context.Context) {
+		fmt.Printf("Текущее время %s\n", time.Now())
+	}, time.Second*1)
+	time.Sleep(time.Minute)
+
+	/*ms := newMemoryStorage()
 	ds := newDumbStorage()
 
 	spawnEmployees(ms)
@@ -76,7 +90,7 @@ func main() {
 
 	printType(2)
 	printType("sdf")
-	printType([]string{"1", "2"})
+	printType([]string{"1", "2"})*/
 }
 
 func spawnEmployees(s storage) {
