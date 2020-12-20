@@ -8,7 +8,7 @@ import (
 	"github.com/step2221/gobegin/modules/storage"
 )
 
-func calculateSomething(e int) {
+func calculateSomething(e int, res chan int) {
 	t := time.Now()
 	result := 0
 	for i := 0; i <= e; i++ {
@@ -16,12 +16,15 @@ func calculateSomething(e int) {
 		time.Sleep(time.Millisecond * 3)
 	}
 	fmt.Printf("Результат: %d; Прошло времени %s", result, time.Since(t))
+	res <- result
 }
 
 func main() {
-	t := time.Now()
+	/*t := time.Now()
 	fmt.Printf("Старт: %s\n", t.Format(time.RFC3339))
 
+	result1 := make(chan int) //Канал для передачи значения между горутинами
+	result2 := make(chan int) //Канал для передачи значения между горутинами
 	go func() {
 		for {
 			for _, r := range `-\|/` {
@@ -30,12 +33,30 @@ func main() {
 			}
 		}
 	}()
-	go calculateSomething(1000)
+	go calculateSomething(1000, result1)
 
-	go calculateSomething(2000)
+	go calculateSomething(2000, result2)
+
+	fmt.Println(<-result1)
+	fmt.Println(<-result2)
 
 	time.Sleep(time.Second * 8)
 	fmt.Printf("Время выполнения программы: %s\n", time.Since(t))
+	*/
+
+	number := make(chan int)
+
+	go func() {
+		number <- 42
+	}()
+	time.Sleep(time.Millisecond * 1000)
+
+	select { //позволяет не блокировать		выполнение горутины при чтении\записи в канал.
+	case n := <-number:
+		fmt.Println(n)
+	default:
+		fmt.Println("пусто")
+	}
 
 	fmt.Println(testmod.Hi("rob"))
 	/*worker := scheduler.NewScheduler()
