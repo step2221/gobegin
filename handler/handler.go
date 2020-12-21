@@ -27,7 +27,7 @@ func NewHandler(storage storage.Storage) *Handler {
 //GetEmployee .
 func (h *Handler) GetEmployee(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("ID"))
-	fmt.Println(c)
+
 	fmt.Printf("%d", id)
 	if err != nil {
 		fmt.Printf("failed to convert id param to int: %s\n", err.Error())
@@ -86,7 +86,8 @@ func (h *Handler) CreateEmployee(c *gin.Context) {
 
 //UpdateEmployee .
 func (h *Handler) UpdateEmployee(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("ID"))
+	fmt.Printf("Изменяем запись с id = %d", id)
 	if err != nil {
 		fmt.Printf("failed to convert id param to int: %s\n", err.Error())
 		c.JSON(http.StatusBadRequest, ErrorResponse{

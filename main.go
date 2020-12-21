@@ -23,8 +23,8 @@ func main() {
 	router.GET("/test", TestFunc)
 	router.POST("/employee", handler.CreateEmployee)
 	router.GET("/employee/:ID", handler.GetEmployee)
-	router.PUT("/employee/:id", handler.UpdateEmployee)
-	router.DELETE("/employee/:id", handler.DeleteEmployee)
+	router.PUT("/employee/:ID", handler.UpdateEmployee)
+	router.DELETE("/employee/:ID", handler.DeleteEmployee)
 
 	router.Run()
 
