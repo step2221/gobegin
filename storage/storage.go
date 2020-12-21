@@ -1,9 +1,17 @@
-package main
+package storage
 
 import (
 	"errors"
 	"sync"
 )
+
+//Storage .
+type Storage interface {
+	Insert(e *Employee)
+	Get(id int) (Employee, error)
+	Update(id int, e Employee)
+	Delete(id int)
+}
 
 //Employee ..
 type Employee struct {
@@ -12,14 +20,6 @@ type Employee struct {
 	Sex    string `json:"sex"`
 	Age    int    `json:"age"`
 	Salary int    `json:"salary"`
-}
-
-//Storage .
-type Storage interface {
-	Insert(e *Employee)
-	Get(id int) (Employee, error)
-	Update(id int, e Employee)
-	Delete(id int)
 }
 
 //MemoryStorage .
@@ -32,8 +32,9 @@ type MemoryStorage struct {
 //NewMemoryStorage .
 func NewMemoryStorage() *MemoryStorage {
 	return &MemoryStorage{
-		data:    make(map[int]Employee),
 		counter: 1,
+		data:    make(map[int]Employee),
+		Mutex:   sync.Mutex{},
 	}
 }
 
