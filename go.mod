@@ -1,4 +1,4 @@
-module github.com/step2221/gobegin/modules
+module restapi
 
 go 1.15
 

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"restapi/storage"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -13,16 +14,19 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
+//Handler  .
 type Handler struct {
-	storage Storage
+	storage storage.Storage
 }
 
-func NewHandler(storage Storage) *Handler {
+//NewHandler .
+func NewHandler(storage storage.Storage) *Handler {
 	return &Handler{storage: storage}
 }
 
+//CreateEmployee .
 func (h *Handler) CreateEmployee(c *gin.Context) {
-	var employee Employee
+	var employee storage.Employee
 
 	if err := c.BindJSON(&employee); err != nil {
 		fmt.Printf("failed to bind employee: %s\n", err.Error())
@@ -39,6 +43,7 @@ func (h *Handler) CreateEmployee(c *gin.Context) {
 	})
 }
 
+//UpdateEmployee .
 func (h *Handler) UpdateEmployee(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -49,7 +54,7 @@ func (h *Handler) UpdateEmployee(c *gin.Context) {
 		return
 	}
 
-	var employee Employee
+	var employee storage.Employee
 
 	if err := c.BindJSON(&employee); err != nil {
 		fmt.Printf("failed to bind employee: %s\n", err.Error())
@@ -66,6 +71,7 @@ func (h *Handler) UpdateEmployee(c *gin.Context) {
 	})
 }
 
+//GetEmployee .
 func (h *Handler) GetEmployee(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -88,8 +94,9 @@ func (h *Handler) GetEmployee(c *gin.Context) {
 	c.JSON(http.StatusOK, employee)
 }
 
+//DeleteEmployee .
 func (h *Handler) DeleteEmployee(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("ID"))
 	if err != nil {
 		fmt.Printf("failed to convert id param to int: %s\n", err.Error())
 		c.JSON(http.StatusBadRequest, ErrorResponse{
@@ -97,7 +104,7 @@ func (h *Handler) DeleteEmployee(c *gin.Context) {
 		})
 		return
 	}
-
+	print(id)
 	h.storage.Delete(id)
 
 	c.String(http.StatusOK, "employee deleted")

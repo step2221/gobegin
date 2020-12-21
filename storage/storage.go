@@ -7,29 +7,29 @@ import (
 
 //Employee ..
 type Employee struct {
-	ID     int
-	Name   string
-	Sex    string //пол
-	Age    int
-	Salary int
+	ID     int    `json:"id"`
+	Name   string `json:"name"`
+	Sex    string `json:"sex"`
+	Age    int    `json:"age"`
+	Salary int    `json:"salary"`
 }
 
-//Storage ..
+//Storage .
 type Storage interface {
-	Insert(e Employee) error
+	Insert(e *Employee)
 	Get(id int) (Employee, error)
 	Update(id int, e Employee)
-	Delete(id int) error
+	Delete(id int)
 }
 
-//MemoryStorage ..
+//MemoryStorage .
 type MemoryStorage struct {
 	counter int
 	data    map[int]Employee
 	sync.Mutex
 }
 
-//NewMemoryStorage ..
+//NewMemoryStorage .
 func NewMemoryStorage() *MemoryStorage {
 	return &MemoryStorage{
 		data:    make(map[int]Employee),
@@ -38,28 +38,31 @@ func NewMemoryStorage() *MemoryStorage {
 }
 
 //Insert .
-func (s *MemoryStorage) Insert(e *Employee) error {
+func (s *MemoryStorage) Insert(e *Employee) {
 	s.Lock()
+
 	e.ID = s.counter
 	s.data[e.ID] = *e
+
 	s.counter++
+
 	s.Unlock()
-	return nil
 }
 
-//Get ..
-func (s *MemoryStorage) Get(ID int) (Employee, error) {
+//Get .
+func (s *MemoryStorage) Get(id int) (Employee, error) {
 	s.Lock()
 	defer s.Unlock()
 
-	employee, ok := s.data[ID]
+	employee, ok := s.data[id]
 	if !ok {
-		return Employee{}, errors.New("такого сотрудника не существует")
+		return employee, errors.New("employee not found")
 	}
+
 	return employee, nil
 }
 
-//Update ..
+//Update .
 func (s *MemoryStorage) Update(id int, e Employee) {
 	s.Lock()
 	s.data[id] = e
@@ -67,9 +70,8 @@ func (s *MemoryStorage) Update(id int, e Employee) {
 }
 
 //Delete .
-func (s *MemoryStorage) Delete(ID int) {
+func (s *MemoryStorage) Delete(id int) {
 	s.Lock()
-	delete(s.data, ID)
+	delete(s.data, id)
 	s.Unlock()
-
 }
