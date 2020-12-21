@@ -1,14 +1,13 @@
 package main
 
 import (
-	"restapi/storage"
-
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	memoryStorage := storage.NewMemoryStorage()
-	handler := NewHandler(memoryStorage)
+
+	MemoryStorage := NewMemoryStorage()
+	handler := NewHandler(MemoryStorage)
 
 	router := gin.Default()
 	router.POST("/employee", handler.CreateEmployee)

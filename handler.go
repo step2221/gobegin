@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"restapi/storage"
+
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -16,17 +16,17 @@ type ErrorResponse struct {
 
 //Handler  .
 type Handler struct {
-	storage storage.Storage
+	storage Storage
 }
 
 //NewHandler .
-func NewHandler(storage storage.Storage) *Handler {
+func NewHandler(storage Storage) *Handler {
 	return &Handler{storage: storage}
 }
 
 //CreateEmployee .
 func (h *Handler) CreateEmployee(c *gin.Context) {
-	var employee storage.Employee
+	var employee Employee
 
 	if err := c.BindJSON(&employee); err != nil {
 		fmt.Printf("failed to bind employee: %s\n", err.Error())
@@ -54,7 +54,7 @@ func (h *Handler) UpdateEmployee(c *gin.Context) {
 		return
 	}
 
-	var employee storage.Employee
+	var employee Employee
 
 	if err := c.BindJSON(&employee); err != nil {
 		fmt.Printf("failed to bind employee: %s\n", err.Error())
